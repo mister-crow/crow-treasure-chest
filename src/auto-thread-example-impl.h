@@ -15,9 +15,11 @@ public:
 
 void test_auto_thread() {
 	using crowbox::AutoThread;
-	std::shared_ptr<RunnableSample> runnable_ptr = std::make_shared<RunnableSample>();
-	auto auto_thread_ptr = AutoThread<RunnableSample>::create(runnable_ptr, &RunnableSample::do_something);
 
+	std::shared_ptr<RunnableSample> runnable_ptr =
+		std::make_shared<RunnableSample>();
+	auto auto_thread_ptr = AutoThread<RunnableSample>::create(
+							runnable_ptr, &RunnableSample::do_something);
 	auto_thread_ptr->start();
 	auto_thread_ptr->wait();
 }

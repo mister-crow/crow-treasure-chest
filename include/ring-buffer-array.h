@@ -6,18 +6,18 @@
 namespace crowbox {
 
 
-class CircularBufferArray {
+class RingBufferArray {
 public:
-	CircularBufferArray();
+	RingBufferArray();
 
-	CircullarBuffer push(size_t size) {
+	RingBuffer push(size_t size) {
 		try {
 			head_ptr->push(size);
 		} catch (const ErrorStorageFull & err) {
-			//m_buffer_array.emplace_back(CircullarBuffer());
+			//m_buffer_array.emplace_back(RingBuffer());
 			//m_buffer_array.push_back(b);
 		}
-		CircullarBuffer b;
+		RingBuffer b;
 		m_buffer_array.emplace_back(std::move(b));
 		return b;
 	}
@@ -26,9 +26,9 @@ public:
 	}
 
 private:
-	CircullarBuffer * head_ptr;
-	CircullarBuffer * tail_ptr;
-	std::vector<CircullarBuffer> m_buffer_array;
+	RingBuffer * head_ptr;
+	RingBuffer * tail_ptr;
+	std::vector<RingBuffer> m_buffer_array;
 };
 
 }

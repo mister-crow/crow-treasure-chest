@@ -8,14 +8,17 @@ namespace crowbox {
 
 template <class Runnable>
 std::shared_ptr<AutoThread<Runnable>> AutoThread<Runnable>::create(
-		std::shared_ptr<Runnable> runnable_ptr, RunnableMethodPtrType method_ptr) {
+	std::shared_ptr<Runnable> runnable_ptr,
+	RunnableMethodPtrType method_ptr)
+{
 	return std::make_shared<AutoThread<Runnable>>(runnable_ptr, method_ptr);
 }
 
 
 template <class Runnable>
 AutoThread<Runnable>::AutoThread(
-        std::shared_ptr<Runnable> runnable_ptr, RunnableMethodPtrType method_ptr) :
+        std::shared_ptr<Runnable> runnable_ptr,
+		RunnableMethodPtrType method_ptr) :
     m_runnable_method_ptr(method_ptr),
     m_runnable_object_ptr(runnable_ptr),
     m_thread_ptr(),
@@ -39,11 +42,11 @@ template <class Runnable>
 void AutoThread<Runnable>::thread_method() {
     m_sync_mutex.lock();
     {
-        std::shared_ptr<AutoThread> protector_reference = this->shared_from_this();
+        std::shared_ptr<AutoThread> protector_ref = this->shared_from_this();
         m_referenced_acquired.store(true);
         m_sync_cond_var.notify_one();
         {
-            std::lock_guard<std::timed_mutex> thread_lock(m_thread_active_mutex);
+            std::lock_guard<std::timed_mutex> t_lock(m_thread_active_mutex);
             m_sync_mutex.unlock();
             Runnable* runnable_object_ptr = m_runnable_object_ptr.get();
             (runnable_object_ptr->*m_runnable_method_ptr)();
@@ -64,7 +67,9 @@ void AutoThread<Runnable>::wait() {
 
 template <class Runnable>
 template <class Rep, class Period>
-bool AutoThread<Runnable>::wait_for(const std::chrono::duration<Rep, Period> & timout_duration) {
+bool AutoThread<Runnable>::wait_for(
+	const std::chrono::duration<Rep, Period> & timout_duration)
+{
     if (!m_referenced_acquired.load()) {
         return false;
     }

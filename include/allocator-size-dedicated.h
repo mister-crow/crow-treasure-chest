@@ -251,6 +251,3 @@ public:
 private:
 	std::unordered_map<size_t, AllocatorFixedBlockSizeExtendable> m_allocators;
 };
-
-
-}

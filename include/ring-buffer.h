@@ -13,9 +13,6 @@
 namespace crowbox {
 
 
-// TODO: replace asserts with proper error handling
-
-
 class ErrorStorageFull : public Exception {
 public:
 	ErrorStorageFull() : Exception() {
@@ -23,10 +20,11 @@ public:
 };
 
 
-class CircullarBuffer {
+// The class is not thread safe.
+class RingBuffer {
 public:
 
-	CircullarBuffer() :
+	RingBuffer() :
 		m_array_ptr(),
 		m_array_end_ptr(nullptr),
 		m_right_bndry_ptr(nullptr),
@@ -36,9 +34,9 @@ public:
 		m_contiguity(true) {
 	}
 
-	CircullarBuffer(const CircullarBuffer &) = delete;
+	RingBuffer(const RingBuffer &) = delete;
 
-	CircullarBuffer(CircullarBuffer && copy) :
+	RingBuffer(RingBuffer && copy) :
 		m_array_ptr(std::move(copy.m_array_ptr)),
 		m_array_end_ptr(copy.m_array_end_ptr),
 		m_right_bndry_ptr(copy.m_right_bndry_ptr),
@@ -54,7 +52,7 @@ public:
 		copy.m_contiguity = false;
 	}
 
-	//CircullarBuffer & operator = (CircullarBuffer && copy) = default;
+	//RingBuffer & operator = (RingBuffer && copy) = default;
 
 	/// Make sure that we have at least specified amount of space at
 	/// get_push_addr() address
@@ -64,7 +62,7 @@ public:
 
 	/// check if the first_addr address is allocated after the second_addr
 	/// allocation. It is assumed that both addresses are allocated from these
-	/// CircullarBuffer and are not logically released
+	/// RingBuffer and are not logically released
 	bool compare_allocations(const void * first_addr,
 							const void * second_addr) const {
 		if (m_push_ptr > m_pop_ptr) {

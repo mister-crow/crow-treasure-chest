@@ -24,10 +24,10 @@ namespace crowbox {
 // The class is similar to std::thread but with additional self protecting
 // features. Each instance of AutoThread is wrapped into shared_ptr wich means
 // that each reference to AutoThread is bound to reference counter.
-// This implementation makes sure that in case if client suddenly looses the last
-// reference AutoThread the active thread itself maintaince additional reference
-// to itself to make sure that destructor will not be called on objects that
-// are in use by the active thread.
+// This implementation makes sure that in case if client suddenly looses the
+// last reference to AutoThread the active thread itself maintaince the last
+// reference to itself to make sure that destructor will not be called on
+// objects that are in use by the active thread.
 template <class Runnable>
 class AutoThread : public std::enable_shared_from_this<AutoThread<Runnable>> {
 public:
@@ -60,7 +60,9 @@ public:
     AutoThread& operator = (const AutoThread&&) = delete;
 
 	// TODO: make this private and make sure std::make_shared can access it
-    AutoThread(std::shared_ptr<Runnable> runnable_ptr, RunnableMethodPtrType method_ptr);
+    AutoThread(
+		std::shared_ptr<Runnable> runnable_ptr,
+		RunnableMethodPtrType method_ptr);
 private:
 
     void thread_method();
@@ -74,6 +76,5 @@ private:
     std::mutex m_sync_mutex;
     std::atomic<bool> m_referenced_acquired;
 };
-
 
 }

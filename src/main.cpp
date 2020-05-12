@@ -1,13 +1,13 @@
 // required by EXIT_SUCCESS, EXIT_FAILURE
 #include <cstdlib>
 
-// required by std::cout
+// required by std::cerr, std::cout
 #include <iostream>
 
 // required by crowbox::EXCEPTION
 #include "exception.h"
 
-//#include "circullar-buffer.h"
+//#include "ring-buffer.h"
 
 //#include "lockeless-queue.h"
 
@@ -17,34 +17,40 @@
 // required by auto_thread_unit_tests()
 #include "auto-thread-unit-test.h"
 
-// required by automata_unit_tests()
-#include "automata-unit-test.h"
+// required by state_machine_unit_tests()
+#include "state-machine-unit-test.h"
 
 // required by Graph
-#include "graph.h"
+//#include "graph.h"
 
-
-void graph_test() {
-	typedef int NodeIdType;
-	crowbox::Graph<NodeIdType> g;
-
-	g.add_node(10);
-}
+// required by intervals_unit_test()
+#include "intervals-unit-test.h"
 
 
 int main() {
 	test_auto_thread();
-	auto_thread_unit_tests();
-	automata_unit_tests();
 
-	try {
-		throw crowbox::EXCEPTION("AAA");
+	bool has_fail = false;
+
+	if (!auto_thread_unit_tests()) {
+		std::cerr << "Auto Thread tests failed" << std::endl;
+		has_fail = true;
 	}
-	catch (const std::exception & err) {
-		std::cout << err.what() << std::endl;
+
+	if (!state_machine_unit_tests()){
+		std::cerr << "State Machine tests failed" << std::endl;
+		has_fail = true;
+	}
+
+	if (!intervals_unit_test()) {
+		std::cerr << "Interval tests failed" << std::endl;
+		has_fail = true;
+	}
+
+	if (has_fail) {
 		return EXIT_FAILURE;
 	}
 
-	//crowbox::Graph<int> g;
+	std::cout << "All tests pass" << std::endl;
 	return EXIT_SUCCESS;
 }

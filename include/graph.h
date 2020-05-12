@@ -66,6 +66,7 @@ public:
 		return (this->m_id == other_node.m_id);
 	}
 
+	// TODO: too expensive?
 	typedef std::unordered_map<IdType, std::pair<const GraphNode *, unsigned>>
 			NodeContainerType;
 
@@ -94,9 +95,11 @@ public:
 
 private:
 	NodeContainerType m_linked_nodes;
+	IdType m_id;
 };
 
 
+template <class IdType=int>
 class GraphNamedNodeId {
 public:
 	GraphNamedNodeId(int id) : m_id(id), m_name() {
@@ -129,10 +132,12 @@ public:
 		return this->m_id < other.m_id;
 	}
 
-
 private:
-	int m_id;
+	IdType m_id;
 	std::string m_name;
+
+	std::unordered_map<IdType, std::pair<const GraphNode<> *, unsigned>>
+		m_linked_nodes;
 };
 
 
@@ -175,6 +180,5 @@ private:
 
 	GraphNodeCollectionType m_nodes;
 };
-
 
 }
