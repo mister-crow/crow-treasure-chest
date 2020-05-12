@@ -17,7 +17,7 @@ public:
 		m_automata_string_check.set_automata(*m_automata_ptr);
     }
 
-	bool is_number(const std::string input) {
+	bool is_number(const std::string input) const {
 		return m_automata_string_check.check(input);
 	}
     

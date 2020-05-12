@@ -48,6 +48,7 @@ protected:
 };
 
 
+/// Optimized for O(1) access, consumes 256 bytes of array for each transition
 class FastTransition : public TransitionBase<FastTransition> {
 public:
 	typedef State<FastTransition> StateType;
@@ -74,9 +75,7 @@ private:
 };
 
 
-/// This implemntation is using std::set to store the collection of
-/// keys that are enabling the transition process to another State.
-/// The search time for the key is log(n)
+/// Optimized for less memory usage with log(n) access time
 class CompactTransition : public TransitionBase<CompactTransition> {
 public:
 	typedef State<CompactTransition> StateType;
@@ -102,6 +101,7 @@ private:
 };
 
 
+/// Optimized for a case when transition is associated with range of symbols
 class RangedTransition : public TransitionBase<RangedTransition> {
 public:
 	typedef State<RangedTransition> StateType;
