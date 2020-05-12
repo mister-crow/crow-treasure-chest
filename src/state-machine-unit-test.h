@@ -43,12 +43,24 @@ bool state_machine_unit_tests_template() {
 	unit_test.test(".52", true);
 	unit_test.test("1111.", true);
 
-	unit_test.test("1111.", false);
-	
 	bool all_pass = unit_test.get_all_passed();
 	return all_pass;
 }
 
 bool state_machine_unit_tests() {
-	return state_machine_unit_tests_template<crowbox::FastTransition>();
+	bool allpass = true;
+
+	if (!state_machine_unit_tests_template<crowbox::FastTransition>() ) {
+		std::cerr << "State Machine test failed with FastTransition parameter"
+			<< std::endl;
+		allpass = false;
+	}
+
+	if (!state_machine_unit_tests_template<crowbox::RangedTransition>()) {
+		std::cerr << "State Machine test failed with RangedTransition parameter"
+			<< std::endl;
+		allpass = false;
+	}
+
+	return allpass;
 }

@@ -13,7 +13,7 @@ HEADERS := \
 	exception.h
 
 HEADERS := $(addprefix $(INC)/, $(HEADERS))
-$(info VAR=$(HEADERS))
+#$(info VAR=$(HEADERS))
 
 LDFLAGS := -pedantic
 CFLAGS := -pedantic -ggdb -Wall -Wextra -std=c++14
