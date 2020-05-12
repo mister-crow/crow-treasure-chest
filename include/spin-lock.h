@@ -1,6 +1,6 @@
 #pragma once
 
-// required by std::atomic_bool
+// required by std::atomic_flag
 #include <atomic>
 
 
