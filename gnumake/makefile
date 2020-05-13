@@ -10,7 +10,10 @@ HEADERS := \
 	state-machine.h \
 	state-machine-string-check.h \
 	intervals.h \
-	exception.h
+	exception.h \
+	auto-thread.h \
+	auto-thread-impl.h
+
 
 HEADERS := $(addprefix $(INC)/, $(HEADERS))
 #$(info VAR=$(HEADERS))

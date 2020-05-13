@@ -1,11 +1,18 @@
 #pragma once
 
+// required by std::array
 #include <array>
-#include <map>
-#include <set>
-#include <vector>
-#include <forward_list>
 
+// required by std::map
+#include <map>
+
+// required by std::set
+#include <set>
+
+// required by std::vector
+#include <vector>
+
+// required by IntervalsNonIntersecting
 #include "intervals.h"
 
 
@@ -189,18 +196,19 @@ public:
     StateMachine() :
 		m_states(),
 		m_start_state_ptr(nullptr) {
-		m_states.emplace_front(StateType::start);
-		m_start_state_ptr = &(m_states.front());
+		m_states.reserve(10);
+		m_states.emplace_back(StateType::start);
+		m_start_state_ptr = &(m_states.back());
     }
 
 	State * add_state_intermediate() {
-		m_states.emplace_front(StateType::intmd);
-		return &(m_states.front());
+		m_states.emplace_back(StateType::intmd);
+		return &(m_states.back());
 	}
 
 	State * add_state_final() {
-		m_states.emplace_front(StateType::final);
-		return &(m_states.front());
+		m_states.emplace_back(StateType::final);
+		return &(m_states.back());
 	}
 
     const State * step(
@@ -236,7 +244,7 @@ public:
     }
     
 private:
-	std::forward_list<State> m_states;
+	std::vector<State> m_states;
 	State * m_start_state_ptr;
 };
 
